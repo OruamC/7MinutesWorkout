@@ -6,14 +6,14 @@ import com.oruam.a7minutesworkout.databinding.ActivityBmiBinding
 
 class BmiActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityBmiBinding
+    private var binding: ActivityBmiBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityBmiBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(binding?.root)
 
-        setSupportActionBar(binding.toolbarBmiActivity)
+        setSupportActionBar(binding?.toolbarBmiActivity)
 
         // Generates de back button on the toolbar
         if (supportActionBar != null) {
@@ -21,8 +21,14 @@ class BmiActivity : AppCompatActivity() {
             supportActionBar?.title = "Calculate BMI"
         }
         // set that on click on the back button will return to the home view
-        binding.toolbarBmiActivity.setNavigationOnClickListener {
+        binding?.toolbarBmiActivity?.setNavigationOnClickListener {
             onBackPressed()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        binding = null
     }
 }
