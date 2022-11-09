@@ -2,7 +2,10 @@ package com.oruam.a7minutesworkout
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import com.oruam.a7minutesworkout.databinding.ActivityHistoryBinding
+import kotlinx.coroutines.launch
 
 class HistoryActivity : AppCompatActivity() {
 
@@ -23,6 +26,19 @@ class HistoryActivity : AppCompatActivity() {
         // set that on click on the back button will return to the home view
         binding?.toolbarHistoryActivity?.setNavigationOnClickListener {
             onBackPressed()
+        }
+
+        val historyDao = (application as WorkOutApp).db.historyDao()
+        getAllCompletedDates(historyDao)
+    }
+
+    private fun getAllCompletedDates(historyDao: HistoryDao) {
+        lifecycleScope.launch {
+            historyDao.fetchAllDates().collect { allCompletedDatesList ->
+                for (i in allCompletedDatesList) {
+                    Log.e("Date: ", "" + i.date)
+                }
+            }
         }
     }
 
